@@ -1,5 +1,5 @@
 :root {
-  --circleSize: 22px;
+  --circleSize: 21px;
 }
 * {
   margin: 0px;
@@ -7,7 +7,12 @@
   box-sizing: border-box;
 }
 
+.disappear {
+  display: none;
+}
+
 .base-button {
+  cursor: pointer;
   border-radius: 11px;
   border: solid #d83c03 3px;
   padding: 3px;
@@ -15,30 +20,28 @@
   width: max-content;
   background-color: white;
   height: 91px;
-  width: 300px;
+  width: 324px;
 }
 
 .base-button__inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 26px;
-    background: linear-gradient(to right, #b8451a, #d7683d);
-    color: white;
-    text-shadow: 0px 1px 2px #00000030;
-    letter-spacing: 1px;
-    font-weight: bold;
-    font-size: 1.75rem;
-    border-radius: 8px;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13%;
+  background: linear-gradient(to right, #b8451a, #d7683d);
+  color: white;
+  text-shadow: 0px 1px 2px #00000030;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 1.95rem;
+  border-radius: 8px;
+  height: 100%;
 }
 
 .base-button__inner__circle {
-  margin: 31px;
+  display: block;
   height: var(--circleSize);
   width: var(--circleSize);
   border-radius: var(--circleSize);
-  background-color: white;
-  display: block;
   background-color: white;
 }

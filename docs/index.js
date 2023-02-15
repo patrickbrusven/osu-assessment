@@ -6,6 +6,7 @@ const OSU = {
 
 const exerciseContainer = document.getElementById("exercise-a");
 const selectSort = document.getElementById("sort");
+const loadingState = document.getElementById("loading");
 const cityData = [];
 const sortedCityData = [];
 
@@ -47,12 +48,13 @@ function reqListener() {
     cityData.push(city);
     sortedCityData.push(city);
   });
+  loadingState.classList.add("disappear");
   renderList(cityData);
 }
 
 function renderList(data) {
   exerciseContainer.innerHTML = "";
-  data.map((data) => {
+  data.map((data, i) => {
     return (exerciseContainer.innerHTML += `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`);
   });
 }
