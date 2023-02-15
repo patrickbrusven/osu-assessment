@@ -1,0 +1,44 @@
+:root {
+  --circleSize: 22px;
+}
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.base-button {
+  border-radius: 11px;
+  border: solid #d83c03 3px;
+  padding: 3px;
+  height: min-content;
+  width: max-content;
+  background-color: white;
+  height: 91px;
+  width: 300px;
+}
+
+.base-button__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 26px;
+    background: linear-gradient(to right, #b8451a, #d7683d);
+    color: white;
+    text-shadow: 0px 1px 2px #00000030;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 1.75rem;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.base-button__inner__circle {
+  margin: 31px;
+  height: var(--circleSize);
+  width: var(--circleSize);
+  border-radius: var(--circleSize);
+  background-color: white;
+  display: block;
+  background-color: white;
+}
