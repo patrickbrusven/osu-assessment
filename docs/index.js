@@ -1,13 +1,9 @@
-const OSU = {
+const OSU_DATA = {
   city: "Oregon State University",
   lat: "44.5638",
   lng: "-123.2794",
 };
-const exerciseContainer = document.getElementById("exercise-a");
-const selectSort = document.getElementById("sort");
-const loadingState = document.getElementById("loading");
-
-selectSort.addEventListener("change", handleSelectChange);
+const EXERCISE_CONTAINER = document.getElementById("exercise-a");
 
 const App = {
   state: {
@@ -17,41 +13,81 @@ const App = {
     errorStatus: null,
     cityData: [],
   },
+
   template() {
-    exerciseContainer.innerHTML = "";
-    let renderThis = null;
+    EXERCISE_CONTAINER.innerHTML = "";
+    let renderThis;
     if (this.state.isLoading) {
       renderThis = `<span>loading data</span>`;
     } else if (!this.state.isLoading && this.state.error) {
       renderThis = `<span>Error loading data</br>Error msg: ${this.state.errorMessage}</br>Error status: ${this.state.errorStatus}</span>`;
     } else {
-      renderThis = this.renderList(this.state.cityData);
+      renderThis = `${this.renderSelectSort()}<ol id="city-list">${this.renderList(
+        this.state.cityData
+      )}</ol>`;
     }
-    exerciseContainer.innerHTML = renderThis;
+    EXERCISE_CONTAINER.innerHTML = renderThis;
   },
+
   initialize() {
     this.template();
   },
 
+  renderSelectSort() {
+    return `<label for="sort">Sort by distance from OSU:</label>
+      <select name="sort" id="sort">
+        <option value="null">none</option>
+        <option value="asc">ascending</option>
+        <option value="desc">descending</option>
+      </select>`;
+  },
+
+  addSelectEventListener() {
+    const selectSort = document.getElementById("sort");
+    selectSort.addEventListener("change", (e) => App.handleSelectChange(e));
+  },
+
+  handleSelectChange(e) {
+    const cityList = document.getElementById("city-list");
+    cityList.innerHTML = "";
+    if (e.target.value === "asc") {
+      cityList.innerHTML += this.renderList(
+        [...this.state.cityData].sort((c1, c2) => {
+          return c1.distanceToOSU - c2.distanceToOSU;
+        })
+      );
+    } else if (e.target.value === "desc") {
+      cityList.innerHTML += this.renderList(
+        [...this.state.cityData]
+          .sort((c1, c2) => {
+            return c1.distanceToOSU - c2.distanceToOSU;
+          })
+          .reverse()
+      );
+    } else {
+      cityList.innerHTML += this.renderList(this.state.cityData);
+    }
+  },
+
   renderList(data) {
-    exerciseContainer.innerHTML = "";
-    data.map((data, i) => {
-      return (exerciseContainer.innerHTML += `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`);
+    const list = data.map((data, i) => {
+      return `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`;
     });
+    return list;
   },
 
   handleCityData(data, statusCode) {
     if (statusCode !== 200) {
-      this.state.isLoading = false;
       this.state.error = true;
       this.state.errorMessage = data;
       this.state.errorStatus = statusCode;
+      this.state.isLoading = false;
       this.template();
     } else {
       const serializedData = data.map((city) => {
         const distanceToOSU = distance(
-          OSU.lat,
-          OSU.lng,
+          OSU_DATA.lat,
+          OSU_DATA.lng,
           city.lat,
           city.lng,
           "M"
@@ -63,31 +99,12 @@ const App = {
       }, this);
       this.state.isLoading = false;
       this.template();
+      this.addSelectEventListener();
     }
   },
 };
 
 App.initialize();
-
-function handleSelectChange(e) {
-  if (selectSort.value === "asc") {
-    renderList(
-      sortedCityData.sort((c1, c2) => {
-        return c1.distanceToOSU - c2.distanceToOSU;
-      })
-    );
-  } else if (selectSort.value === "desc") {
-    renderList(
-      sortedCityData
-        .sort((c1, c2) => {
-          return c1.distanceToOSU - c2.distanceToOSU;
-        })
-        .reverse()
-    );
-  } else {
-    renderList(cityData);
-  }
-}
 
 // AJAX fetch city data
 const fetchCityData = new XMLHttpRequest();
@@ -103,7 +120,7 @@ fetchCityData.onreadystatechange = () => {
 };
 fetchCityData.open(
   "GET",
-  "https://s3-us-west-2.amazonaws.com/cdt-web-storage/cities.jsons",
+  "https://s3-us-west-2.amazonaws.com/cdt-web-storage/cities.json",
   true
 );
 fetchCityData.send();
