@@ -16,17 +16,14 @@ const App = {
 
   template() {
     EXERCISE_CONTAINER.innerHTML = "";
-    let renderThis;
     if (this.state.isLoading) {
-      renderThis = `<span>loading data</span>`;
+      EXERCISE_CONTAINER.innerHTML += `<span>loading data</span>`;
     } else if (!this.state.isLoading && this.state.error) {
-      renderThis = `<span>Error loading data</br>Error msg: ${this.state.errorMessage}</br>Error status: ${this.state.errorStatus}</span>`;
+      EXERCISE_CONTAINER.innerHTML += `<span>Error loading data</br>Error msg: ${this.state.errorMessage}</br>Error status: ${this.state.errorStatus}</span>`;
     } else {
-      renderThis = `${this.renderSelectSort()}<ol id="city-list">${this.renderList(
-        this.state.cityData
-      )}</ol>`;
+      EXERCISE_CONTAINER.innerHTML += `${this.renderSelectSort()}<ol id="city-list"></ol>`;
+      this.renderList(this.state.cityData);
     }
-    EXERCISE_CONTAINER.innerHTML = renderThis;
   },
 
   initialize() {
@@ -48,16 +45,14 @@ const App = {
   },
 
   handleSelectChange(e) {
-    const cityList = document.getElementById("city-list");
-    cityList.innerHTML = "";
     if (e.target.value === "asc") {
-      cityList.innerHTML += this.renderList(
+      this.renderList(
         [...this.state.cityData].sort((c1, c2) => {
           return c1.distanceToOSU - c2.distanceToOSU;
         })
       );
     } else if (e.target.value === "desc") {
-      cityList.innerHTML += this.renderList(
+      this.renderList(
         [...this.state.cityData]
           .sort((c1, c2) => {
             return c1.distanceToOSU - c2.distanceToOSU;
@@ -65,15 +60,16 @@ const App = {
           .reverse()
       );
     } else {
-      cityList.innerHTML += this.renderList(this.state.cityData);
+      this.renderList(this.state.cityData);
     }
   },
 
   renderList(data) {
+    const cityList = document.getElementById("city-list");
+    cityList.innerHTML = "";
     const list = data.map((data, i) => {
-      return `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`;
+      return (cityList.innerHTML += `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`);
     });
-    return list;
   },
 
   handleCityData(data, statusCode) {
