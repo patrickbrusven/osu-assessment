@@ -2,11 +2,14 @@
   --circleSize: 21px;
 }
 * {
-  margin: 0px;
-  padding: 0px;
   box-sizing: border-box;
 }
 
+li {
+  margin-bottom: 10px;
+}
+
+/* button style */
 .base-button {
   cursor: pointer;
   border-radius: 11px;
