@@ -87,7 +87,7 @@ const App = {
           city.lat,
           city.lng,
           "M"
-        );
+        ).toFixed(2);
         return { ...city, distanceToOSU };
       });
       serializedData.forEach((city) => {
@@ -120,3 +120,5 @@ fetchCityData.open(
   true
 );
 fetchCityData.send();
+
+
