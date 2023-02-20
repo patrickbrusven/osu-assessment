@@ -1,10 +1,13 @@
+// Oregon State University Coordinates.
 const OSU_LAT_LNG = {
   lat: "44.5638",
   lng: "-123.2794",
 };
 
+// Entry to index.html.
 const EXERCISE_CONTAINER = document.getElementById("exercise-a");
 
+// Object literal containing all logic for Excercise A.
 const App = {
   state: {
     isLoading: true,
