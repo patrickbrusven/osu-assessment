@@ -22,7 +22,9 @@ const App = {
     if (this.state.isLoading) {
       EXERCISE_CONTAINER.innerHTML += `<span>loading data</span>`;
     } else if (!this.state.isLoading && this.state.isError) {
-      EXERCISE_CONTAINER.innerHTML += `<span>Error loading data</br>Error msg: ${this.state.errorMessage}</br>Error status: ${this.state.errorStatus}</span>`;
+      EXERCISE_CONTAINER.innerHTML += `<span>Error loading data</br>
+        Error msg: ${this.state.errorMessage}</br>
+        Error status: ${this.state.errorStatus}</span>`;
     } else {
       EXERCISE_CONTAINER.innerHTML += `${this.renderSelectSort()}<ol id="city-list"></ol>`;
       this.renderList(this.state.cityData);
@@ -72,7 +74,12 @@ const App = {
     const cityList = document.getElementById("city-list");
     cityList.innerHTML = "";
     const list = data.map((data) => {
-      return (cityList.innerHTML += `<li>City: ${data.city}<br/>Lat: ${data.lat}<br/>Lng: ${data.lng}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`);
+      return (cityList.innerHTML += `<li>City: ${
+        data.city
+      }<br/>Lat: ${humanizeLatLng("lat", data.lat)}<br/>Lng: ${humanizeLatLng(
+        "lng",
+        data.lng
+      )}<br/>distance to OSU: ${data.distanceToOSU}mi</li>`);
     });
   },
 
@@ -118,3 +125,17 @@ const App = {
 };
 
 App.initialize();
+
+// helper function convert coordinates to North, East, South, West.
+const humanizeLatLng = (latLng, unit) => {
+  const isNegativeUnit = unit.includes("-");
+  if (latLng.toLowerCase() === "lat") {
+    return isNegativeUnit
+      ? `${unit.replace("-", "")}&#176; S`
+      : `${unit}&#176; N`;
+  } else {
+    return isNegativeUnit
+      ? `${unit.replace("-", "")}&#176; W`
+      : `${unit}&#176; E`;
+  }
+};
