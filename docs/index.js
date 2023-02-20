@@ -1,5 +1,4 @@
-const OSU_DATA = {
-  city: "Oregon State University",
+const OSU_LAT_LNG = {
   lat: "44.5638",
   lng: "-123.2794",
 };
@@ -77,8 +76,8 @@ const App = {
   handleCityData(data) {
     const serializedData = data.map((city) => {
       const distanceToOSU = distance(
-        OSU_DATA.lat,
-        OSU_DATA.lng,
+        OSU_LAT_LNG.lat,
+        OSU_LAT_LNG.lng,
         city.lat,
         city.lng,
         "M"
