@@ -15,11 +15,10 @@ li {
   border-radius: 11px;
   border: solid #d83c03 3px;
   padding: 3px;
-  height: min-content;
-  width: max-content;
   background-color: white;
   height: 91px;
-  width: 324px;
+  width: 100%;
+  max-width: 324px;
 }
 
 .base-button__inner {
